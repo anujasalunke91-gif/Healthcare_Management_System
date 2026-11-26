@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Report - <?php echo htmlspecialchars($diagnostic['patient_name']); ?></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .report-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            border-bottom: 3px solid #0f172a;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #0f172a;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            color: #64748b;
+            font-size: 14px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            color: #0f172a;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .info-item {
+            padding: 10px;
+            background: #f8fafc;
+            border-radius: 5px;
+        }
+        
+        .info-label {
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            color: #0f172a;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .vitals-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .vital-item {
+            text-align: center;
+            padding: 15px;
+            background: #f0f9ff;
+            border-radius: 8px;
+            border: 1px solid #bae6fd;
+        }
+        
+        .vital-label {
+            color: #0369a1;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .vital-value {
+            color: #0c4a6e;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .diagnosis-box {
+            background: #fef2f2;
+            border-left: 4px solid #dc2626;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        
+        .diagnosis-box.normal {
+            background: #f0fdf4;
+            border-left-color: #16a34a;
+        }
+        
+        .diagnosis-label {
+            color: #7f1d1d;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        
+        .diagnosis-box.normal .diagnosis-label {
+            color: #14532d;
+        }
+        
+        .diagnosis-value {
+            color: #0f172a;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .diagnosis-sub {
+            color: #64748b;
+            font-size: 14px;
+        }
+        
+        .confidence-bar {
+            margin-top: 15px;
+        }
+        
+        .confidence-label {
+            color: #64748b;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        .confidence-track {
+            height: 20px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0284c7, #0ea5e9);
+            border-radius: 10px;
+        }
+        
+        .prescription-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .prescription-table th,
+        .prescription-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .prescription-table th {
+            background: #f8fafc;
+            color: #0f172a;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        
+        .prescription-table td {
+            color: #334155;
+            font-size: 14px;
+        }
+        
+        .advice-box {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        
+        .advice-label {
+            color: #92400e;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .advice-text {
+            color: #78350f;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+            color: #64748b;
+            font-size: 12px;
+        }
+        
+        .scan-preview {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .scan-item {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .scan-item img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+        }
+        
+        .scan-label {
+            color: #64748b;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .report-container {
+                box-shadow: none;
+                padding: 20px;
+            }
+            
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Intelligent Healthcare Platform</h1>
+            <p>AI-Powered Diagnostic Assessment Report</p>
+        </div>
+        
+        <!-- Patient Information -->
+        <div class="section">
+            <h2 class="section-title">Patient Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Patient Name</div>
+                    <div class="info-value"><?php echo htmlspecialchars($diagnostic['patient_name']); ?></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Age / Gender</div>
+                    <div class="info-value"><?php echo $age; ?> years / <?php echo htmlspecialchars($diagnostic['gender']); ?></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Blood Group</div>
+                    <div class="info-value"><?php echo htmlspecialchars($diagnostic['blood_group']); ?></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Contact Number</div>
+                    <div class="info-value"><?php echo htmlspecialchars($diagnostic['contact_number']); ?></div>
+                </div>
+                <div class="info-item" style="grid-column: span 2;">
+                    <div class="info-label">Chronic Conditions</div>
+                    <div class="info-value"><?php echo htmlspecialchars($diagnostic['chronic_conditions'] ?? 'None reported'); ?></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Doctor Information -->
+        <div class="section">
+            <h2 class="section-title">Attending Physician</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Doctor Name</div>
+                    <div class="info-value"><?php echo htmlspecialchars($diagnostic['doctor_name']); ?></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Specialization</div>
+                    <div class="info-value"><?php echo htmlspecialchars($diagnostic['specialization']); ?></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Room Number</div>
+                    <div class="info-value"><?php echo htmlspecialchars($diagnostic['room_number']); ?></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Assessment Date</div>
+                    <div class="info-value"><?php echo formatDate($diagnostic['created_at'], 'F d, Y'); ?></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Vitals Snapshot -->
+        <div class="section">
+            <h2 class="section-title">Vital Signs at Assessment</h2>
+            <div class="vitals-grid">
+                <div class="vital-item">
+                    <div class="vital-label">Systolic BP</div>
+                    <div class="vital-value"><?php echo number_format($vitals['systolic_bp'] ?? 0); ?></div>
+                    <div class="info-label">mmHg</div>
+                </div>
+                <div class="vital-item">
+                    <div class="vital-label">Diastolic BP</div>
+                    <div class="vital-value"><?php echo number_format($vitals['diastolic_bp'] ?? 0); ?></div>
+                    <div class="info-label">mmHg</div>
+                </div>
+                <div class="vital-item">
+                    <div class="vital-label">Fasting Glucose</div>
+                    <div class="vital-value"><?php echo number_format($vitals['glucose'] ?? 0); ?></div>
+                    <div class="info-label">mg/dL</div>
+                </div>
+                <div class="vital-item">
+                    <div class="vital-label">Smoking (Pack Years)</div>
+                    <div class="vital-value"><?php echo number_format($vitals['smoking'] ?? 0, 1); ?></div>
+                </div>
+                <div class="vital-item">
+                    <div class="vital-label">Family History</div>
+                    <div class="vital-value"><?php echo htmlspecialchars($vitals['family_history'] ?? 'No'); ?></div>
+                </div>
+                <div class="vital-item">
+                    <div class="vital-label">Clinical Risk Score</div>
+                    <div class="vital-value"><?php echo number_format($diagnostic['clinical_risk_score'], 0); ?>%</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scan Information -->
+        <div class="section">
+            <h2 class="section-title">Medical Imaging</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Scan Type</div>
+                    <div class="info-value"><?php echo htmlspecialchars($diagnostic['scan_type']); ?></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Analysis Date</div>
+                    <div class="info-value"><?php echo formatDate($diagnostic['created_at'], 'F d, Y g:i A'); ?></div>
+                </div>
+            </div>
+            
+            <?php if ($diagnostic['scan_file_path'] && file_exists($diagnostic['scan_file_path'])): ?>
+                <div class="scan-preview">
+                    <div class="scan-item">
+                        <img src="<?php echo htmlspecialchars($diagnostic['scan_file_path']); ?>" alt="Original Scan">
+                        <div class="scan-label">Original Scan</div>
+                    </div>
+                    <?php if ($diagnostic['heatmap_file_path'] && file_exists($diagnostic['heatmap_file_path'])): ?>
+                        <div class="scan-item">
+                            <img src="<?php echo htmlspecialchars($diagnostic['heatmap_file_path']); ?>" alt="Grad-CAM Heatmap">
+                            <div class="scan-label">AI Heatmap Analysis</div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        
+        <!-- AI Diagnosis -->
+        <div class="section">
+            <h2 class="section-title">AI-Powered Diagnosis</h2>
+            <div class="diagnosis-box <?php echo $diagnostic['predicted_condition'] === 'Normal' ? 'normal' : ''; ?>">
+                <div class="diagnosis-label">Detected Condition</div>
+                <div class="diagnosis-value"><?php echo htmlspecialchars($diagnostic['predicted_condition']); ?></div>
+                <div class="diagnosis-sub">Stage: <?php echo htmlspecialchars($diagnostic['predicted_stage']); ?></div>
+                
+                <div class="confidence-bar">
+                    <div class="confidence-label">AI Confidence Score: <?php echo number_format($diagnostic['confidence_score'], 1); ?>%</div>
+                    <div class="confidence-track">
+                        <div class="confidence-fill" style="width: <?php echo $diagnostic['confidence_score']; ?>%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Prescription -->
+        <?php if ($prescription): ?>
+            <?php 
+                $medications = json_decode($prescription['medication_list'], true);
+                if (!empty($medications)): 
+            ?>
+            <div class="section">
+                <h2 class="section-title">Prescribed Medications</h2>
+                <table class="prescription-table">
+                    <thead>
+                        <tr>
+                            <th>Drug Name</th>
+                            <th>Dosage</th>
+                            <th>Frequency</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($medications as $med): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($med['drug_name']); ?></td>
+                                <td><?php echo htmlspecialchars($med['dosage']); ?></td>
+                                <td><?php echo htmlspecialchars($med['frequency']); ?></td>
+                                <td><?php echo htmlspecialchars($med['duration']); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                
+                <?php if ($prescription['clinical_remedies_advice']): ?>
+                    <div class="advice-box">
+                        <div class="advice-label">Clinical Remedies & Advice</div>
+                        <div class="advice-text"><?php echo nl2br(htmlspecialchars($prescription['clinical_remedies_advice'])); ?></div>
+                    </div>
+                <?php endif; ?>
+                
+                <?php if ($prescription['next_followup_date']): ?>
+                    <div class="info-item" style="margin-top: 15px;">
+                        <div class="info-label">Next Follow-up Appointment</div>
+                        <div class="info-value"><?php echo formatDate($prescription['next_followup_date'], 'F d, Y'); ?></div>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <?php endif; ?>
+        <?php endif; ?>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>This report was generated by the Intelligent Healthcare Management Platform</p>
+            <p>Report ID: #<?php echo $diagnostic_id; ?> | Generated on: <?php echo date('F d, Y g:i A'); ?></p>
+            <p class="no-print" style="margin-top: 20px;">
+                <button onclick="window.print()" style="padding: 10px 20px; background: #0f172a; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                    <i class="bi bi-printer"></i> Print Report
+                </button>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

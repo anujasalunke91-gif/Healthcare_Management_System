@@ -1,0 +1,61 @@
+# ==============================================================================
+# MedCore Health (healthcare_platform) - Project .gitignore
+# Preserves source code, assets, sql/database.sql, and trained ML model files
+# ==============================================================================
+
+# Environment & Local Credentials
+.env
+.env.*
+!.env.example
+config/config.local.php
+
+# Local Database Dumps & SQLite Files (preserve sql/database.sql)
+*.sqlite
+*.sqlite3
+*.db
+*.sql.gz
+*.sql.bz2
+*backup*.sql
+*dump*.sql
+*export*.sql
+healthcare_platform.sql
+
+# Uploaded Patient Scans, Heatmaps & Private Reports
+uploads/scans/*
+!uploads/scans/.gitkeep
+uploads/reports/*
+!uploads/reports/.gitkeep
+*.dcm
+*.nii
+*.nii.gz
+
+# Python Virtual Environment & Cache
+ai_service/venv/
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Dependencies & Archives
+vendor/
+node_modules/
+*.zip
+*.tar.gz
+
+# Logs & Temporary Files
+*.log
+logs/
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+# IDE & OS Metadata
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

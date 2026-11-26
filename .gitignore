@@ -1,0 +1,78 @@
+# ==============================================================================
+# MedCore Health - Root .gitignore for Public GitHub Repository
+# Excludes local credentials, patient uploads, database dumps, runtimes, logs
+# Preserves application source, schema (sql/database.sql), and trained ML model
+# ==============================================================================
+
+# Environment & Local Secrets
+.env
+.env.*
+!.env.example
+healthcare_platform/.env
+healthcare_platform/.env.*
+!healthcare_platform/.env.example
+healthcare_platform/config/config.local.php
+config/config.local.php
+
+# Local Database Exports, Dumps & SQLite Files (preserve sql/database.sql schema)
+*.sqlite
+*.sqlite3
+*.db
+*.sql.gz
+*.sql.bz2
+*backup*.sql
+*dump*.sql
+*export*.sql
+healthcare_platform.sql
+
+# Uploaded Patient Scans, Heatmaps & Private Medical Reports
+healthcare_platform/uploads/scans/*
+!healthcare_platform/uploads/scans/.gitkeep
+healthcare_platform/uploads/reports/*
+!healthcare_platform/uploads/reports/.gitkeep
+uploads/scans/*
+!uploads/scans/.gitkeep
+uploads/reports/*
+!uploads/reports/.gitkeep
+*.dcm
+*.nii
+*.nii.gz
+
+# Bundled Local Windows PHP Runtime & Python Virtual Environment
+php/
+healthcare_platform/ai_service/venv/
+ai_service/venv/
+venv/
+.venv/
+env/
+
+# Redundant Archives & Backups (*.zip excludes local backup ZIPs; ML model is tracked in ai_service/models/)
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Caches, Build & Compiled Artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+vendor/
+node_modules/
+
+# Logs & Temporary Files
+*.log
+logs/
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+# IDE & OS Files
+.vscode/
+.idea/
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+desktop.ini
