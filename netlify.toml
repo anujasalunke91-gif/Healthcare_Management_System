@@ -1,0 +1,6 @@
+[build]
+  command = "rm -rf -- dist && php scripts/netlify-preview.php"
+  publish = "dist"
+
+[build.environment]
+  PHP_VERSION = "8.3"

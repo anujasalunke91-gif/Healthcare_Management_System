@@ -59,6 +59,7 @@ __pycache__/
 .pytest_cache/
 vendor/
 node_modules/
+/dist/
 
 # Logs & Temporary Files
 *.log
