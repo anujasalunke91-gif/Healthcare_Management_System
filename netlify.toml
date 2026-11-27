@@ -1,0 +1,44 @@
+[build]
+  command = "bash scripts/prepare-model.sh && node scripts/prepare-demo.mjs"
+  publish = "dist"
+
+[build.environment]
+  PHP_VERSION = "8.3"
+  NODE_VERSION = "24"
+  PYTHON_VERSION = "3.12"
+  ONNXRUNTIME_NODE_INSTALL = "skip"
+
+[server]
+  path = "/api/*"
+
+[[redirects]]
+  from = "/auth/login.php"
+  to = "/portal/"
+  status = 302
+
+[[redirects]]
+  from = "/auth/register.php"
+  to = "/portal/?view=register"
+  status = 302
+
+[[redirects]]
+  from = "/patient/dashboard.php"
+  to = "/portal/?role=patient"
+  status = 302
+
+[[redirects]]
+  from = "/doctor/dashboard.php"
+  to = "/portal/?role=doctor"
+  status = 302
+
+[[redirects]]
+  from = "/admin/dashboard.php"
+  to = "/portal/?role=admin"
+  status = 302
+
+[[headers]]
+  for = "/portal/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "same-origin"

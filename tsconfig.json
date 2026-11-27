@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "target": "ES2023",
+    "strict": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "noEmit": true
+  },
+  "include": ["db/**/*.ts", "netlify/server/**/*.ts", "tests/**/*.ts", "drizzle.config.ts"]
+}
