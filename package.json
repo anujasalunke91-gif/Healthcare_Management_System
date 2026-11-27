@@ -1,0 +1,32 @@
+{
+  "name": "medcore-health-demo",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "test": "tsx --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^11.1.12",
+    "@netlify/database": "^2.0.4",
+    "@netlify/identity": "^2.0.1",
+    "@netlify/server": "^0.1.6",
+    "drizzle-orm": "^1.0.0-beta.22",
+    "hono": "^4.13.23",
+    "onnxruntime-node": "^1.31.1",
+    "pdf-lib": "^1.17.1",
+    "sharp": "^0.35.5",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.2.17",
+    "@types/node": "^26.6.11",
+    "drizzle-kit": "^1.0.0-beta.22",
+    "esbuild": "^0.28.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
